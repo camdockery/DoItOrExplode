@@ -1,0 +1,6 @@
+@DoItOrExplode.Server_HostAddress = http://localhost:5146
+
+GET {{DoItOrExplode.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
