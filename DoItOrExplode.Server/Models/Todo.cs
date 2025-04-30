@@ -1,4 +1,4 @@
-﻿namespace DoItOrExplode.Server
+﻿namespace DoItOrExplode.Server.Models
 {
     public class Todo
     {

@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from 'node:url';
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite';
-import plugin from '@vitejs/plugin-react';
+//import plugin from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
 import child_process from 'child_process';
@@ -48,7 +48,7 @@ export default defineConfig({
                 target,
                 secure: false
             },
-            '^/tasks': {
+            '^/todos': {
                 target,
                 secure: false
             }
