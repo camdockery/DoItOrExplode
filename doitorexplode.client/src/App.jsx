@@ -1,6 +1,8 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
 import './App.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 function App() {
     const [todos, setTodos] = useState([]);
     //const [nameInput, setName] = React.useState('');
@@ -50,7 +52,7 @@ function App() {
     }
 
     useEffect(() => {
-        fetch('https://localhost:7144/Todo') // Replace with your real endpoint
+        fetch('https://localhost:7144/Todo')
             .then(res => res.json())
             .then(data => setTodos(data));
     }, []);
@@ -63,11 +65,6 @@ function App() {
                 <h1 className="text-3xl font-bold text-white">Do It Or Explode!</h1>
             </header>
             <div className="pt-5 flex flex-col">
-                {/*<div className="bg-green-900 w-150 h-32 rounded hover:bg-green-800">*/}
-                {/*    <input className="ml-2 mt-2 w-50 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={nameInput} onChange={(name) => setName(name.target.value)}></input>*/}
-                {/*    <input className="ml-2 mt-2 w-100 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={descriptionInput} onChange={(description) => setDescription(description.target.value)}></input>*/}
-                {/*    <input className="ml-2 mt-2 w-75 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={dueDateInput} onChange={(dueDate) => setDueDate(dueDate.target.value)}></input>*/}
-                {/*</div>*/}
                 {todos.map(todo => (
                     <div key={todo.id} className="mb-10 bg-green-900 w-150 h-42 rounded hover:bg-green-800">
                         <div className="flex items-center">
@@ -80,7 +77,8 @@ function App() {
                         </div>
                         <div className="flex items-center">
                             <span className="ml-2 mt-2 font-bold text-white">Due Date</span>
-                            <input className="ml-2 mt-2 w-75 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={todo.dueDate} onChange={(e) => handleInputChange(todo.id, 'dueDate', e.target.value)}></input>
+                            <DatePicker className="ml-2 mt-2 w-75 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white"
+                                dateFormat="yyyy-MM-dd" selected={todo.dueDate ? new Date(todo.dueDate) : null} onChange={(date) => handleInputChange(todo.id, 'dueDate', date)} />                         
                         </div>
                         <div className="flex items-center">
                             <span className="ml-2 mt-2 font-bold text-white">Urgency</span>
@@ -88,8 +86,7 @@ function App() {
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
-                            </select>
-                            {/*<input className="ml-2 mt-2 w-75 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={todo.urgency} onChange={(e) => handleInputChange(todo.id, 'urgency', e.target.value)}></input>*/}
+                            </select>                          
                         </div>
                     </div>
                 ))}
