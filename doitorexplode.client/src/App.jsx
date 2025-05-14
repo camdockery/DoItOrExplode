@@ -9,6 +9,7 @@ function App() {
     //const [descriptionInput, setDescription] = React.useState('');
     //const [dueDateInput, setDueDate] = React.useState('');
     const addTask = () => {
+
         fetch('https://localhost:7144/Todo', {
             method: 'POST',
             headers: {
@@ -28,17 +29,34 @@ function App() {
             })
             .then(data => {
                 console.log('Todo created', data);
+                setTodos(todos => [...todos, data]);
             })
             .catch(error => {
                 console.error('Error:', error);
             });
-        //newList.push()
-        //newList.push(<input type="text" value={input} onChange={(e) => setInput(e.target.value)}></input>);
-        //newList.push(5);
-        //newTodos.push();
-        //setTodos(newTodos);
+    }
 
-        //alert("Add a name, description, urgency, and due date!");
+    const editTodo = (id) => {
+        const todoToUpdate = todos.find(todo => todo.id === id);
+        
+        //if (todoToUpdate != undefined) {
+
+        //}
+
+        fetch(`https://localhost:7144/Todo/${todoToUpdate.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(todoToUpdate),
+        })
+            .then(data => {
+                console.log('Todo updated', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
     }
 
     const handleInputChange = (id, field, value) => {
@@ -57,6 +75,8 @@ function App() {
             .then(data => setTodos(data));
     }, []);
 
+    const sortedTodos = [...todos].sort((a, b) => a.urgency - b.urgency);
+    //setTodos(sortedTodos);
 
 
     return (
@@ -65,24 +85,24 @@ function App() {
                 <h1 className="text-3xl font-bold text-white">Do It Or Explode!</h1>
             </header>
             <div className="pt-5 flex flex-col">
-                {todos.map(todo => (
+                {sortedTodos.map(todo => (
                     <div key={todo.id} className="mb-10 bg-green-900 w-150 h-42 rounded hover:bg-green-800">
                         <div className="flex items-center">
                             <span className="ml-2 mt-2 font-bold text-white">Name</span>
-                            <input className="ml-2 mt-2 w-50 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={todo.name} onChange={(e) => handleInputChange(todo.id, 'name', e.target.value)}></input>
+                            <input className="ml-2 mt-2 w-50 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={todo.name} onChange={(e) => handleInputChange(todo.id, 'name', e.target.value)} onBlur={editTodo(todo.id)}></input>
                         </div>
                         <div className="flex items-center">
                             <span className="ml-2 mt-2 font-bold text-white">Description</span>
-                            <input className="ml-2 mt-2 w-100 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={todo.description} onChange={(e) => handleInputChange(todo.id, 'description', e.target.value)}></input>
+                            <input className="ml-2 mt-2 w-100 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={todo.description} onChange={(e) => handleInputChange(todo.id, 'description', e.target.value)} onBlur={editTodo(todo.id)}></input>
                         </div>
                         <div className="flex items-center">
                             <span className="ml-2 mt-2 font-bold text-white">Due Date</span>
                             <DatePicker className="ml-2 mt-2 w-75 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white"
-                                dateFormat="yyyy-MM-dd" selected={todo.dueDate ? new Date(todo.dueDate) : null} onChange={(date) => handleInputChange(todo.id, 'dueDate', date)} />                         
+                                dateFormat="yyyy-MM-dd" selected={todo.dueDate ? new Date(todo.dueDate) : null} onChange={(date) => handleInputChange(todo.id, 'dueDate', date)} onBlur={editTodo(todo.id)}/>                         
                         </div>
                         <div className="flex items-center">
                             <span className="ml-2 mt-2 font-bold text-white">Urgency</span>
-                            <select className="ml-2 mt-2 w-75 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={todo.urgency} onChange={(e) => handleInputChange(todo.id, 'urgency', e.target.value)}>
+                            <select className="ml-2 mt-2 w-75 h-8 bg-green-600 rounded hover:bg-green-500 font-bold text-white" type="text" value={todo.urgency} onChange={(e) => handleInputChange(todo.id, 'urgency', e.target.value)} onBlur={editTodo(todo.id)}>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -90,7 +110,7 @@ function App() {
                         </div>
                     </div>
                 ))}
-                <button className="mt-4 w-150 h-16 text-3xl bg-neutral-900 font-bold text-white rounded hover:bg-neutral-800" onClick={() => addTask()}>+</button>     
+                <button className="mt-4 w-150 h-16 text-3xl bg-neutral-900 font-bold text-white rounded hover:bg-neutral-800" onClick={() => addTask()}>+</button> 
             </div>
         </div>
     );

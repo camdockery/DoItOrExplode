@@ -18,12 +18,6 @@ namespace DoItOrExplode.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<Todo>> GetTodos()
         {
-            //context.TodoItems.Add(todo);
-            //await _context.SaveChangesAsync();
-
-            ////    return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
-            //return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
-
             var todos = await context.Todos.ToListAsync();
             return Ok(todos);
         }
@@ -43,13 +37,6 @@ namespace DoItOrExplode.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Todo>> AddTodo([FromBody] Todo newTodo)
         {
-            //var todo = new Todo
-            //{
-            //    Name = name
-            //    , Description = description
-            //    , Urgency = urgency
-            //    , DueDate = dueDate
-            //};
             context.Todos.Add(newTodo);
             await context.SaveChangesAsync();
 
