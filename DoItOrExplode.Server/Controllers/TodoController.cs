@@ -3,6 +3,7 @@ using DoItOrExplode.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+//The different endpoints, connecting the backend and the frontend
 namespace DoItOrExplode.Server.Controllers
 {
     [ApiController]
@@ -15,6 +16,7 @@ namespace DoItOrExplode.Server.Controllers
         {
             this.context = context;
         }
+        //Sends the todos to the frontend
         [HttpGet]
         public async Task<ActionResult<Todo>> GetTodos()
         {
@@ -22,6 +24,7 @@ namespace DoItOrExplode.Server.Controllers
             return Ok(todos);
         }
 
+        //Sends the todo with the id to the frontend
         [HttpGet("{id}")]
         public async Task<ActionResult<Todo>> GetTodo(int id)
         {
@@ -42,7 +45,7 @@ namespace DoItOrExplode.Server.Controllers
 
             return CreatedAtAction(nameof(GetTodo), new { id = newTodo.Id }, newTodo);
         }
-
+        //Sets the todo with the id to the one from the frontend in the database
         [HttpPut("{id}")]
         public async Task<ActionResult> EditTodo(int id, [FromBody] Todo newTodo)
         {
@@ -58,7 +61,7 @@ namespace DoItOrExplode.Server.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-
+        //Deletes the todo with the id in the backend
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(int id)
         {
